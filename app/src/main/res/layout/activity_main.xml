@@ -5,11 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
-    tools:context=".MainActivity">
+    tools:context=".UI.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/kabinet"
@@ -71,28 +81,27 @@
                         app:layout_constraintTop_toBottomOf="@+id/vash_balance"
                         app:layout_constraintStart_toEndOf="@+id/card_ruble"
                         style="@style/Text"
-                        android:text="ЛС: 11010010"
                         android:textSize="18sp"
                         android:textColor="@color/grey"
                         android:layout_marginStart="12dp" />
 
                     <TextView
+                        android:id="@+id/balanceSum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/vash_balance"
                         app:layout_constraintBottom_toBottomOf="@id/ls"
-                        android:text="100.42"
                         style="@style/Text"
                         android:textSize="18sp"
                         android:textColor="#88b" />
 
                     <TextView
+                        android:id="@+id/kOplate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/card_ruble"
-                        android:text="К оплате за сентябрь: 0.00р"
                         style="@style/Text"
                         android:textSize="16sp"
                         android:textColor="@color/grey"
@@ -170,12 +179,12 @@
                         android:src="@drawable/ic_account_circle_black_24dp" />
 
                     <TextView
+                        android:id="@+id/name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintStart_toEndOf="@id/chelovek"
                         app:layout_constraintTop_toTopOf="@id/chelovek"
                         app:layout_constraintBottom_toBottomOf="@id/chelovek"
-                        android:text="Иванов Иван Иванович"
                         style="@style/Text.Grey"
                         android:layout_marginStart="12dp" />
 
@@ -189,13 +198,13 @@
                         android:src="@drawable/ic_home_black_24dp" />
 
                     <TextView
+                        android:id="@+id/address"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         app:layout_constraintStart_toEndOf="@id/domik"
                         app:layout_constraintTop_toTopOf="@id/domik"
                         app:layout_constraintBottom_toBottomOf="@id/domik"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:text="Сахалин, ул. Пушкина, д. Колотушкина, кв 25"
                         style="@style/Text.Grey"
                         android:layout_marginStart="12dp" />
 
@@ -209,6 +218,7 @@
                         android:src="@drawable/ic_widgets_black_24dp" />
 
                     <TextView
+                        android:id="@+id/menu_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintStart_toEndOf="@id/menu"
