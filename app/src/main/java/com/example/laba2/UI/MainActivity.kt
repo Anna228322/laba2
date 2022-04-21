@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.laba2.Network.models.Balance
 import com.example.laba2.Network.models.Tariff
 import com.example.laba2.Network.models.UserInfo
 import com.example.laba2.Network.retrofit.ApiProvider
@@ -19,8 +18,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
-    private  lateinit var adapter: Adapter
-    private  lateinit var binding: ActivityMainBinding
+    private lateinit var adapter: Adapter
+    private lateinit var binding: ActivityMainBinding
 
     private val api = ApiProvider(RetrofitClient()).getApi()
 
@@ -36,61 +35,35 @@ class MainActivity : AppCompatActivity() {
         MainScope().launch {
             binding.loading.isVisible = true
 
-            val tariffsCallback = object: Callback<List<Tariff>> {
-                override fun onResponse(call: Call<List<Tariff>>, response: Response<List<Tariff>>) {
-                    val tariffs = response.body() ?: onFailure(call, Exception())
-                    val items = (tariffs as List<Tariff>).map(::mapTariffToItem)
-                    setTariffs(items)
-                    binding.loading.isVisible = false
-                }
+            loadBalance()
+            loadTariffs()
+            loadUserInfo()
+        }
+    }
 
-                override fun onFailure(call: Call<List<Tariff>>, t: Throwable) {
-                    Toast.makeText(this@MainActivity, "Bad internet connection", Toast.LENGTH_LONG).show()
-                    binding.loading.isVisible = false
-                }
-            }
+    private suspend fun loadTariffs() {
+        val tariffs = api.getTariffs()
+        val items = tariffs.map(::mapTariffToItem)
+        setTariffs(items)
+        binding.loading.isVisible = false
+    }
 
-            val balanceCallback = object: Callback<List<Balance>> {
-                override fun onResponse(
-                    call: Call<List<Balance>>,
-                    response: Response<List<Balance>>,
-                ) {
-                    val balance = response.body()?.get(0) ?: onFailure(call, Exception())
-                    val casted = balance as Balance
-                    with(binding) {
-                        balanceSum.text = casted.balance.toString()
-                        kOplate.text = getString(R.string.k_oplate).format(casted.nextPay)
-                        ls.text = getString(R.string.Lic_schet).format(casted.accNum)
-                        loading.isVisible = false
-                    }
-                }
+    private suspend fun loadUserInfo() {
+        val user = api.getUserInfo()[0]
+        with(binding) {
+            name.text = "${user.firstName} ${user.lastName}"
+            address.text = user.address
+            loading.isVisible = false
+        }
+    }
 
-                override fun onFailure(call: Call<List<Balance>>, t: Throwable) {
-                    Toast.makeText(this@MainActivity, "Bad internet connection", Toast.LENGTH_LONG).show()
-                    binding.loading.isVisible = false
-                }
-            }
-
-            val userCallback = object: Callback<List<UserInfo>> {
-                override fun onResponse(call: Call<List<UserInfo>>, response: Response<List<UserInfo>>) {
-                    val user = response.body()?.get(0) ?: onFailure(call, Exception())
-                    val casted = (user as UserInfo)
-                    with(binding) {
-                        name.text = "${casted.firstName} ${casted.lastName}"
-                        address.text = user.address
-                        loading.isVisible = false
-                    }
-                }
-
-                override fun onFailure(call: Call<List<UserInfo>>, t: Throwable) {
-                    Toast.makeText(this@MainActivity, "Bad internet connection", Toast.LENGTH_LONG).show()
-                    binding.loading.isVisible = false
-                }
-            }
-
-            api.getTariffs().enqueue(tariffsCallback)
-            api.getBalance().enqueue(balanceCallback)
-            api.getUserInfo().enqueue(userCallback)
+    private suspend fun loadBalance() {
+        val balance = api.getBalance()[0]
+        with(binding) {
+            balanceSum.text = balance.balance.toString()
+            kOplate.text = getString(R.string.k_oplate).format(balance.nextPay)
+            ls.text = getString(R.string.Lic_schet).format(balance.accNum)
+            loading.isVisible = false
         }
     }
 
