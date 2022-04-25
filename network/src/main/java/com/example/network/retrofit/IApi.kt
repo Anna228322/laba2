@@ -1,9 +1,8 @@
-package com.example.laba2.Network.retrofit
+package com.example.network.retrofit
 
-import com.example.laba2.Network.models.Balance
-import com.example.laba2.Network.models.Tariff
-import com.example.laba2.Network.models.UserInfo
-import retrofit2.Call
+import com.example.domain.models.Balance
+import com.example.domain.models.Tariff
+import com.example.domain.models.UserInfo
 import retrofit2.http.GET
 
 interface IApi {

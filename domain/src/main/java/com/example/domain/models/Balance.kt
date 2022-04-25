@@ -1,4 +1,4 @@
-package com.example.laba2.Network.models
+package com.example.domain.models
 
 data class Balance(
     val accNum: Int,

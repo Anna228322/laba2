@@ -14,3 +14,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "laba2"
 include ':app'
+include ':domain'
+include ':lib'
+include ':network'
+include ':data'

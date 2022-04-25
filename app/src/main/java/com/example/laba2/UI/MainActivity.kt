@@ -1,70 +1,68 @@
 package com.example.laba2.UI
 
 import android.os.Bundle
-import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.laba2.Network.models.Tariff
-import com.example.laba2.Network.models.UserInfo
-import com.example.laba2.Network.retrofit.ApiProvider
-import com.example.laba2.Network.retrofit.RetrofitClient
+import com.example.domain.models.Tariff
+import com.example.laba2.App
+import com.example.network.retrofit.ApiProvider
+import com.example.network.retrofit.RetrofitClient
 import com.example.laba2.R
 import com.example.laba2.databinding.ActivityMainBinding
+import com.example.laba2.viewmodel.IMainViewModel
+import com.example.laba2.viewmodel.ViewModelFactory
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
+    @Inject lateinit var factory: ViewModelFactory
     private lateinit var adapter: Adapter
     private lateinit var binding: ActivityMainBinding
 
-    private val api = ApiProvider(RetrofitClient()).getApi()
+    private val viewModel by viewModels<IMainViewModel>{ factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        inject()
         setView()
         setAdapter()
-        load()
+        subscribe()
     }
 
-    private fun load() {
-        MainScope().launch {
-            binding.loading.isVisible = true
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshData()
+    }
 
-            loadBalance()
-            loadTariffs()
-            loadUserInfo()
+    private fun subscribe() {
+        viewModel.loading.observe(this){
+            binding.loading.isVisible = it
+        }
+        viewModel.tariffs.observe(this){
+            setTariffs(it.map{ mapTariffToItem(it)})
+        }
+        viewModel.balance.observe(this) {
+            with(binding) {
+                balanceSum.text = it.balance.toString()
+                kOplate.text = getString(R.string.k_oplate).format(it.nextPay)
+                ls.text = getString(R.string.Lic_schet).format(it.accNum)
+            }
+        }
+        viewModel.userInfo.observe(this){
+            with(binding) {
+                name.text = "${it.firstName} ${it.lastName}"
+                address.text = it.address
+            }
         }
     }
 
-    private suspend fun loadTariffs() {
-        val tariffs = api.getTariffs()
-        val items = tariffs.map(::mapTariffToItem)
-        setTariffs(items)
-        binding.loading.isVisible = false
-    }
-
-    private suspend fun loadUserInfo() {
-        val user = api.getUserInfo()[0]
-        with(binding) {
-            name.text = "${user.firstName} ${user.lastName}"
-            address.text = user.address
-            loading.isVisible = false
-        }
-    }
-
-    private suspend fun loadBalance() {
-        val balance = api.getBalance()[0]
-        with(binding) {
-            balanceSum.text = balance.balance.toString()
-            kOplate.text = getString(R.string.k_oplate).format(balance.nextPay)
-            ls.text = getString(R.string.Lic_schet).format(balance.accNum)
-            loading.isVisible = false
-        }
+    private fun inject() {
+        App.appComponent.inject(this)
     }
 
     private fun mapTariffToItem(tariff: Tariff) =
