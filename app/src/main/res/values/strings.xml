@@ -2,6 +2,6 @@
     <string name="app_name">laba2</string>
     <string name="tv_kabinet">Личный кабинет</string>
     <string name="quot"> Тариф \"Улыбка (бесплатный)\"</string>
-    <string name="k_oplate">К оплате за сентябрь: %.2f</string>
+    <string name="k_oplate">К оплате: %.2f</string>
     <string name="Lic_schet">ЛС: %s</string>
 </resources>

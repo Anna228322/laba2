@@ -1,4 +1,4 @@
-package com.example.laba2.UI
+package com.example.laba2.ui
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.laba2.databinding.RvTarifBinding

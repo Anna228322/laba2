@@ -6,7 +6,7 @@ import com.example.domain.models.UserInfo
 import retrofit2.http.GET
 
 interface IApi {
-    @GET("UserInfo")
+    @GET("userInfo")
     suspend fun getUserInfo(): List<UserInfo>
 
     @GET ("tariffs")

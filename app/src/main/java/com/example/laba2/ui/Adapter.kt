@@ -1,4 +1,4 @@
-package com.example.laba2.UI
+package com.example.laba2.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -1,6 +1,5 @@
 package com.example.data
 
-
 import com.example.domain.models.Balance
 import com.example.domain.repository.IBalanceRepository
 import com.example.network.retrofit.ApiProvider

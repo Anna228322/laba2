@@ -1,4 +1,4 @@
-package com.example.laba2.UI
+package com.example.laba2.ui
 
 data class Item(
     val title: String,
