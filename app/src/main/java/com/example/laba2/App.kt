@@ -1,6 +1,7 @@
 package com.example.laba2
 
 import android.app.Application
+import com.example.laba2.di.AppModule
 import com.example.laba2.di.DaggerIAppComponent
 import com.example.laba2.di.IAppComponent
 
@@ -16,6 +17,8 @@ class App: Application() {
     }
 
     private fun initDagger() {
-        appComponent = DaggerIAppComponent.create()
+        appComponent = DaggerIAppComponent.builder()
+            .appModule(AppModule(this))
+            .build()
     }
 }
