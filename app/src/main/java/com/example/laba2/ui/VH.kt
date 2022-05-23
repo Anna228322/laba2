@@ -8,5 +8,8 @@ class VH(private val binding: RvTarifBinding): RecyclerView.ViewHolder(binding.r
         binding.name.text = item.title
         binding.speed.text = item.subtitle
         binding.cost.text = "${item.price} ₽"
+        binding.delete.setOnClickListener {
+            item.deleteButton()
+        }
     }
 }

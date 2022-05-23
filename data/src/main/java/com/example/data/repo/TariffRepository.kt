@@ -4,10 +4,11 @@ import com.example.data.dao.TariffDao
 import com.example.data.models.TariffEntity
 import com.example.domain.models.Tariff
 import com.example.domain.repository.ITariffRepository
-import com.example.network.retrofit.ApiProvider
+import com.example.network.retrofit.RetrofitClient
+import javax.inject.Inject
 
-class TariffRepository(
-    private val apiProvider: ApiProvider,
+class TariffRepository @Inject constructor(
+    private val retrofitClient: RetrofitClient,
     private val tariffDao: TariffDao
 ): ITariffRepository {
     override suspend fun getTariffs(): List<Tariff> {
@@ -15,7 +16,7 @@ class TariffRepository(
         return if (fromDb.isNotEmpty()) {
             fromDb.map { Tariff(it.title, it.desc, it.cost, it.id) }
         } else {
-            val fromApi = apiProvider.getApi().getTariffs()
+            val fromApi = retrofitClient.getClient().getTariffs()
             val mapped = fromApi.map { TariffEntity(it.title, it.desc, it.cost, it.id) }
             tariffDao.saveAll(*mapped.toTypedArray())
             fromApi

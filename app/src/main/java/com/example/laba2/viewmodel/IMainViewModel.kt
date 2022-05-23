@@ -11,6 +11,7 @@ abstract class IMainViewModel: ViewModel() {
     abstract val tariffs: LiveData<List<Tariff>>
     abstract val userInfo: LiveData<UserInfo>
     abstract val loading: LiveData<Boolean>
+    abstract fun delete(tariff: Tariff)
 
     abstract fun refreshData()
 }

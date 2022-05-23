@@ -2,13 +2,11 @@ package com.example.laba2
 
 import android.app.Application
 import com.example.laba2.di.AppModule
-import com.example.laba2.di.DaggerIAppComponent
 import com.example.laba2.di.IAppComponent
+import com.example.laba2.di.DaggerIAppComponent
 
 class App: Application() {
-    companion object {
-        lateinit var appComponent: IAppComponent
-    }
+    lateinit var appComponent: IAppComponent
 
     override fun onCreate() {
         super.onCreate()

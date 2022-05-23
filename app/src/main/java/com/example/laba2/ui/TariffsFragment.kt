@@ -6,16 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.domain.models.Tariff
-import com.example.laba2.App
 import com.example.laba2.R
 import com.example.laba2.databinding.FragmentTariffsBinding
-import com.example.laba2.viewmodel.MainViewModel
-import javax.inject.Inject
+import com.example.laba2.di.factory
+import com.example.laba2.viewmodel.IMainViewModel
 
 class TariffsFragment: Fragment() {
-    @Inject lateinit var viewModel: MainViewModel
+    private val viewModel by viewModels<IMainViewModel> { factory }
 
     private lateinit var adapter: Adapter
 
@@ -33,7 +32,6 @@ class TariffsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        App.appComponent.inject(this)
         setAdapter()
         subscribe()
         viewModel.refreshData()
@@ -52,7 +50,8 @@ class TariffsFragment: Fragment() {
                 Item(
                     title = it.title,
                     subtitle = it.desc,
-                    price = it.cost
+                    price = it.cost,
+                    deleteButton = {viewModel.delete(it) }
                 )
             })
         }

@@ -6,14 +6,16 @@ import com.example.data.dao.BalanceDao
 import com.example.data.dao.TariffDao
 import com.example.data.dao.UserInfoDao
 import com.example.data.models.BalanceEntity
+import com.example.data.models.LaunchEntity
 import com.example.data.models.TariffEntity
 import com.example.data.models.UserInfoEntity
 
 @Database(entities = [
     TariffEntity::class,
     BalanceEntity::class,
-    UserInfoEntity::class
-], version = 1)
+    UserInfoEntity::class,
+    LaunchEntity::class
+], version = 2)
 abstract class Database: RoomDatabase() {
     abstract fun getUserInfoDao(): UserInfoDao
     abstract fun getTariffDao(): TariffDao
